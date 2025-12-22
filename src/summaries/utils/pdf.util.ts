@@ -4,9 +4,6 @@ import path from 'path';
 import os from 'os';
 
 export async function extractTextFromPdf(buffer: Buffer): Promise<string> {
-  console.log('===== extractTextFromPdf with LlamaParse START =====');
-  console.log('Buffer length:', buffer?.length);
-
   if (!buffer || buffer.length === 0) {
     throw new Error('Invalid or empty buffer provided');
   }
@@ -27,23 +24,15 @@ export async function extractTextFromPdf(buffer: Buffer): Promise<string> {
       language: 'en',
     });
 
-    console.log('LlamaParse reader initialized');
-    console.log('Parsing PDF with LlamaParse...');
-
     // Pass file path (string) instead of File/Blob
-    const documents = await reader.loadData(tmpFilePath);
 
-    console.log(`Extracted ${documents.length} document(s)`);
+    const documents = await reader.loadData(tmpFilePath);
 
     const text = documents.map((doc) => doc.text).join('\n\n');
 
     if (!text || text.trim().length === 0) {
       throw new Error('Could not extract text from PDF');
     }
-
-    console.log('Extracted text length:', text?.length);
-    console.log('First 300 chars:', text.slice(0, 300));
-    console.log('===== extractTextFromPdf with LlamaParse END =====');
 
     return text;
   } catch (error: any) {

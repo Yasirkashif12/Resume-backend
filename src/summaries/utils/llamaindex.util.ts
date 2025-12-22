@@ -5,9 +5,6 @@ import { RESUME_EXTRACTION_PROMPT } from './prompt.util';
 export async function parseResumeWithAi(
   text: string,
 ): Promise<ExtractedDataDto> {
-  console.log('===== parseResumeWithAi START =====');
-  console.log('Text length:', text?.length);
-
   const apiKey = process.env.OPENROUTER_API_KEY;
 
   if (!apiKey) {
@@ -26,8 +23,6 @@ export async function parseResumeWithAi(
     // Limit text to avoid token limits
     const truncatedText = text.slice(0, 15000);
     const prompt = RESUME_EXTRACTION_PROMPT.replace('{text}', truncatedText);
-
-    console.log('Sending request to OpenRouter...');
 
     const response = await llm.chat({
       messages: [
@@ -56,9 +51,6 @@ export async function parseResumeWithAi(
       throw new Error('Unexpected response content type');
     }
 
-    console.log('AI raw response (first 500 chars):');
-    console.log(responseText.slice(0, 500));
-
     // Extract JSON from response
     const cleanJson = responseText.replace(/```json|```/g, '').trim();
     const jsonMatch = cleanJson.match(/\{[\s\S]*\}/);
@@ -74,13 +66,6 @@ export async function parseResumeWithAi(
     }
 
     const parsedData = JSON.parse(jsonMatch[0]) as ExtractedDataDto;
-
-    console.log('Successfully parsed extracted data:');
-    console.log('- Summary length:', parsedData.summary?.length || 0);
-    console.log('- Education entries:', parsedData.education?.length || 0);
-    console.log('- Tech stack items:', parsedData.techStack?.length || 0);
-    console.log('- Experience entries:', parsedData.experience?.length || 0);
-    console.log('===== parseResumeWithAi END =====');
 
     return parsedData;
   } catch (error: any) {

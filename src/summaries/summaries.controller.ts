@@ -24,11 +24,6 @@ export class SummariesController {
     @UploadedFile() file: Express.Multer.File,
     @Req() req: any,
   ): Promise<Summary> {
-    console.log('===== Upload Resume Request =====');
-    console.log('User from JWT:', req.user);
-    console.log('Uploaded file object:', file);
-    console.log('Request body:', req.body);
-
     if (!req.user) {
       console.error('Error: User not found in request (JWT issue)');
       throw new BadRequestException('User authentication failed');
@@ -49,8 +44,6 @@ export class SummariesController {
         file.buffer,
         req.user,
       );
-      console.log('Processed resume result:', result);
-      console.log('===== End of Upload Resume Request =====');
       return result;
     } catch (err) {
       console.error('Error in processResume:', err);
@@ -60,11 +53,8 @@ export class SummariesController {
     }
   }
 
-  @Get('history')
+  @Get('get')
   async getHistory(@Req() req: any): Promise<Summary[]> {
-    console.log('===== Get History Request =====');
-    console.log('User from JWT:', req.user);
-
     if (!req.user) {
       console.error('Error: User not found in request (JWT issue)');
       throw new BadRequestException('User authentication failed');
@@ -72,8 +62,6 @@ export class SummariesController {
 
     try {
       const history = await this.summariesService.getHistory(req.user);
-      console.log('History fetched:', history);
-      console.log('===== End of Get History Request =====');
       return history;
     } catch (err) {
       console.error('Error fetching history:', err);

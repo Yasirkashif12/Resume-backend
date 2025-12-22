@@ -14,7 +14,7 @@ export class Summary extends BaseEntity {
   id: number;
 
   @Column({ type: 'text' })
-  content: string; // The original text or the combined extracted data
+  content: string;
 
   @Column({ type: 'text', nullable: true })
   summary: string;

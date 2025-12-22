@@ -20,7 +20,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // Public API
   async signup(dto: AuthCredentialsDto): Promise<void> {
     await this.ensureEmailIsUnique(dto.email);
     const hashedPassword = await this.hashPasswordAsync(dto.password);
@@ -33,10 +32,6 @@ export class AuthService {
     const token = this.generateJwt(user);
     return { accessToken: token };
   }
-
-  // ----------------------
-  // Private helpers
-  // ----------------------
 
   private async ensureEmailIsUnique(email: string): Promise<void> {
     const exists = await this.userRepository.findOne({ where: { email } });
