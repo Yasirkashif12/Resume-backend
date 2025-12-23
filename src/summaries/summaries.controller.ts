@@ -6,14 +6,12 @@ import {
   UploadedFile,
   UseInterceptors,
   Req,
-  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { SummariesService } from './summaries.service';
 import { Summary } from './entities/summary.entity';
-import { ResumeValidationPipe } from './pipes/file-validation.pipe';
-
+import { ResumeValidationPipe } from './pipes/resume-validation.pipe';
 @Controller('summaries')
 @UseGuards(JwtAuthGuard)
 export class SummariesController {
@@ -22,7 +20,7 @@ export class SummariesController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadResume(
-    @UploadedFile(new ResumeValidationPipe()) file: Express.Multer.File,
+    @UploadedFile(ResumeValidationPipe) file: Express.Multer.File,
     @Req() req: Request & { user: any },
   ): Promise<Summary> {
     return this.summariesService.processResume(file.buffer, req.user);
