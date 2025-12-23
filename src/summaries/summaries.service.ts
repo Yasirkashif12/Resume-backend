@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Summary } from './entities/summary.entity';
 import { User } from '../user/user.entity';
 import { extractTextFromPdf } from './utils/pdf.util';
-import { parseResumeWithAi } from './utils/resume-ai.util';
+import { parseResumeWithAi } from './utils/resume.ai.util';
 
 @Injectable()
 export class SummariesService {
