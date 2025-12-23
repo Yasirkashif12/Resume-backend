@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   BaseEntity,
 } from 'typeorm';
-import { User } from '../../user/user.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity()
 export class Summary extends BaseEntity {

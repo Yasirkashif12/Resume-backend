@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Summary } from './entities/summary.entity';
-import { User } from '../user/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import { extractTextFromPdf } from './utils/pdf.util';
 import { ExtractedDataDto } from './dto/extracted-data.dto';
 import { AiService } from './ai/ai.service';
