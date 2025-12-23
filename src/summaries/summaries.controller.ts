@@ -12,6 +12,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { SummariesService } from './summaries.service';
 import { Summary } from './entities/summary.entity';
+import { ResumeValidationPipe } from './pipes/file-validation.pipe';
 
 @Controller('summaries')
 @UseGuards(JwtAuthGuard)
@@ -21,13 +22,9 @@ export class SummariesController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadResume(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(new ResumeValidationPipe()) file: Express.Multer.File,
     @Req() req: Request & { user: any },
   ): Promise<Summary> {
-    if (!file?.buffer) {
-      throw new BadRequestException('Valid resume file is required');
-    }
-
     return this.summariesService.processResume(file.buffer, req.user);
   }
 
