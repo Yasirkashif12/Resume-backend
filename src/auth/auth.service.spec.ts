@@ -13,6 +13,7 @@ describe('AuthService', () => {
   });
 
   it('should be defined', () => {
+    console.log("baku")
     expect(service).toBeDefined();
   });
 });
