@@ -39,4 +39,3 @@ export class AuthController {
     return { message: 'Logged out successfully' };
   }
 }
-//Hello
